@@ -1,0 +1,48 @@
+
+---
+title: "03. Get MIMIC-IV-demo data"
+output:
+  html_document:
+    toc: true
+---
+
+
+```{r}
+%sh
+
+mkdir /dbfs/Data
+cd /dbfs/Data
+
+ wget -r -N -c -np https://physionet.org/files/mimic-iv-demo/2.2/
+
+
+```
+
+
+```{bash}
+
+
+mkdir -p /dbfs/Data/mimic-iv-demo/2.2
+mkdir -p /dbfs/Data/mimic-iv-demo/2.2/hosp
+mkdir -p /dbfs/Data/mimic-iv-demo/2.2/icu
+
+cd /dbfs/Data/physionet.org/files/mimic-iv-demo/2.2/ 
+
+mv demo_subject_id.csv /dbfs/Data/mimic-iv-demo/2.2
+mv hosp/*  /dbfs/Data/mimic-iv-demo/2.2/hosp
+mv icu/*  /dbfs/Data/mimic-iv-demo/2.2/icu
+
+rm -Rf /dbfs/Data/physionet.org
+```
+
+```{bash}
+
+rm -Rf /dbfs/Data/physionet.org
+
+#tree /dbfs/Data/mimic-iv-demo 
+find /dbfs/Data/mimic-iv-demo/2.2
+```
+
+```{r}
+
+```
