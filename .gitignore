@@ -1,3 +1,26 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+.Renviron
+.Rprofile 
+
+*.Rproj
+
+
+/Data/*
+*/Data
+*/Data/*
+
+*.html
+
+# Exceptions
+# use ! before the file path to override an exclusion above
+!/Data/name_of_file_to_override_exclusion.csv
+
+
+
+
 # History files
 .Rhistory
 .Rapp.history
