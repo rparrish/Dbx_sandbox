@@ -70,7 +70,7 @@ pak::pak(my_packages)
 
 # COMMAND ----------
 
-fs::dir_copy(temp_r_library, r_library, overwrite = TRUE)
+#fs::dir_copy(temp_r_library, r_library, overwrite = TRUE)
 
 fs::dir_tree(r_library, recursive = FALSE)
 
