@@ -1,0 +1,68 @@
+# The main job for ccdm.
+resources:
+  jobs:
+    ccdm_job:
+      name: CoreCDM update
+
+      schedule:
+        quartz_cron_expression: 0 0/10 * * * ?
+        timezone_id: UTC
+        pause_status: UNPAUSED
+      max_concurrent_runs: 4
+
+      #email_notifications:
+      #  on_failure:
+      #    - your_email@example.com
+
+      tasks:
+        - task_key: 000_get_environment
+          existing_cluster_id: 0620-023628-6cxms30u 
+          #job_cluster_key: my_job_cluster
+          notebook_task:
+            notebook_path: ../src/00-get_environment.r
+              #notebook_path: ../src/notebook.r
+              
+        - task_key: 010_write_hosp_admissions
+          existing_cluster_id: 0620-023628-6cxms30u 
+          notebook_task:
+            notebook_path: ../src/03-write_hosp_admissions.r
+
+        - task_key: 020_write_to_ccdm
+          existing_cluster_id: 0620-023628-6cxms30u 
+          notebook_task:
+            notebook_path: ../src/02-write_to_ccdm.ipynb
+
+        - task_key: 030_r_notebook_task
+          existing_cluster_id: 0620-023628-6cxms30u 
+          notebook_task:
+            notebook_path: ../src/r_notebook.ipynb
+
+        - task_key: 040_sql_notebook_task
+          #job_cluster_key: my_job_cluster
+          existing_cluster_id: 0620-023628-6cxms30u 
+          notebook_task:
+            notebook_path: ../src/sql_notebook.ipynb
+
+      job_clusters:
+        - job_cluster_key: my_job_cluster
+          new_cluster:
+            spark_version: 15.4.x-scala2.12
+            aws_attributes:
+              first_on_demand: 1
+              availability: SPOT_WITH_FALLBACK
+              zone_id: auto
+              spot_bid_price_percent: 100
+            node_type_id: r5d.large
+            cluster_log_conf:
+              dbfs:
+                destination: dbfs:/cluster-logs
+            enable_elastic_disk: true
+            policy_id: 000981ADBD6CF64D
+            data_security_mode: SINGLE_USER
+            is_single_node: false
+            autoscale:
+              min_workers: 1
+              max_workers: 1
+
+      queue:
+        enabled: true

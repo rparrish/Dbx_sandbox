@@ -1,0 +1,24 @@
+      tasks:
+        - task_key: 000_get_environment
+          existing_cluster_id: 0608-161050-5rkxidtd
+          notebook_task:
+            notebook_path: ../src/00-get_environment.r
+        - task_key: 010_write_hosp_admissions
+          existing_cluster_id: 0608-161050-5rkxidtd
+          notebook_task:
+            notebook_path: ../src/03-write_hosp_admissions.r
+        - task_key: 020_write_to_ccdm
+          existing_cluster_id: 0608-161050-5rkxidtd
+          notebook_task:
+            notebook_path: ../src/02-write_to_ccdm.ipynb
+        - task_key: 030_r_notebook_task
+          existing_cluster_id: 0608-161050-5rkxidtd
+          notebook_task:
+            notebook_path: ../src/r_notebook.ipynb
+        - task_key: 040_sql_notebook_task
+          #job_cluster_key: my_job_cluster
+          existing_cluster_id: 0608-161050-5rkxidtd
+          notebook_task:
+            notebook_path: ../src/sql_notebook.ipynb
+
+

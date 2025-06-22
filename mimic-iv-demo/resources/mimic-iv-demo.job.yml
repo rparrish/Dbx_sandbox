@@ -1,0 +1,47 @@
+# The get data job for mimic-iv-demo.
+resources:
+  jobs:
+    get_mimic_iv_data_job:
+      name: Get MIMIC-IV-Demo data from PhysioNet.org
+
+      schedule:
+        quartz_cron_expression: 0 0/10 * * * ?
+        timezone_id: UTC
+        pause_status: UNPAUSED
+      max_concurrent_runs: 4
+
+      #email_notifications:
+      #  on_failure:
+      #    - your_email@example.com
+
+      tasks:
+        - task_key: 00-get_mimic-iv-demo_data
+          existing_cluster_id: 0620-023628-6cxms30u
+            #job_cluster_key: my_job_cluster
+          notebook_task:
+            notebook_path: ../src/01-get_mimic-iv-demo_data.ipynb
+              #notebook_path: ../src/notebook.r
+               
+      job_clusters:
+        - job_cluster_key: my_job_cluster
+          new_cluster:
+            spark_version: 15.4.x-scala2.12
+            aws_attributes:
+              first_on_demand: 1
+              availability: SPOT_WITH_FALLBACK
+              zone_id: auto
+              spot_bid_price_percent: 100
+            node_type_id: r5d.large
+            cluster_log_conf:
+              dbfs:
+                destination: dbfs:/cluster-logs
+            enable_elastic_disk: true
+            policy_id: 000981ADBD6CF64D
+            data_security_mode: SINGLE_USER
+            is_single_node: false
+            autoscale:
+              min_workers: 1
+              max_workers: 10
+
+      queue:
+        enabled: true
