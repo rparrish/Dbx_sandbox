@@ -1,0 +1,10 @@
+{
+  "properties": {
+    "project_name": {
+      "type": "string",
+      "default": "Dbx_sandbox",
+      "description": "Databricks Sandbox",
+      "order": 1
+    }
+  }
+}
