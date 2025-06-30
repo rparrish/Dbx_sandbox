@@ -13,7 +13,7 @@ options(db_profile = "Dev")
 
 ## Cluster management 
 
-clusters <- db_cluster_list() |>
+clusters <- db_cluster_list() |> g()
     enframe() |>
     unnest_wider(col = value) |> 
     unnest_wider(col = default_tags) |> 
