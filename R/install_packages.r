@@ -1,15 +1,8 @@
 # Databricks notebook source
-#config <- config::get()
-os_version <- Sys.info()['version']
-
-options(repos = c(CRAN = "https://packagemanager.posit.co/cran/__linux__/focal/latest"))
-if(grepl("20.04", os_version)) {
-options(repos = c(CRAN = "https://packagemanager.posit.co/cran/__linux__/jammy/latest"))
-}
-
-options()$repos
-#.libPaths()
 start_time <- Sys.time()
+
+#.libPaths()
+
 
 # COMMAND ----------
 
@@ -22,25 +15,17 @@ wd <- getwd()
 
 temp_r_library <- file.path("/tmp/R/library")
 r_library <- file.path("/dbfs/R/library")
+spark_r_library <- file.path("/databricks/spark/R/lib")
+
 
 if(!dir.exists(temp_r_library)) { dir.create(temp_r_library, recursive = TRUE) }
 if(!dir.exists(r_library)) { dir.create(r_library, recursive = TRUE) }
 
 .libPaths(c(temp_r_library, .libPaths()))
 
-.libPaths()
+#.libPaths()
 
 
-
-# COMMAND ----------
-
-dir("/dbfs/")
-
-# COMMAND ----------
-
-# MAGIC %sh
-# MAGIC
-# MAGIC cat /etc/os-release
 
 # COMMAND ----------
 
@@ -60,6 +45,7 @@ my_packages <- c(
   "nanoparquet", 
   "arrow",
   "logger", 
+  "aws.s3",
   "glue", 
   "prettyunits"
 )
@@ -70,10 +56,34 @@ pak::pak(my_packages)
 
 # COMMAND ----------
 
-#fs::dir_copy(temp_r_library, r_library, overwrite = TRUE)
+fs::dir_copy(temp_r_library, r_library, overwrite = TRUE)
 
-fs::dir_tree(r_library, recursive = FALSE)
+fs::dir_tree(r_library, recurse = FALSE)
 
+
+# COMMAND ----------
+
+#pak::pkg_install("aws.s3")
+#pak::pkg_install("pacman")
+
+# COMMAND ----------
+
+#%fs cp file:/dbfs/R/library/aws.s3 /databricks/spark/R/lib -r
+
+# COMMAND ----------
+
+#%fs cp file:/dbfs/R/library/'aws.signature' /databricks/spark/R/lib -r
+
+
+# COMMAND ----------
+
+fs::dir_tree(r_library, recurse = FALSE)
+
+# COMMAND ----------
+
+fs::dir_copy(r_library, spark_r_library, overwrite = TRUE)
+
+fs::dir_tree(spark_r_library, recurse = FALSE)
 
 # COMMAND ----------
 
