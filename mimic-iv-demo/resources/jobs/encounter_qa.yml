@@ -1,0 +1,29 @@
+# Quality checks for Encounter   
+resources:
+  jobs:
+    encounter_qa_job:
+      name: Check the quality of the encounter table 
+
+      schedule:
+        quartz_cron_expression: 0 0/15 19 * * ?
+        timezone_id: PST 
+        pause_status: UNPAUSED
+      max_concurrent_runs: 4
+
+      #email_notifications:
+      #  on_failure:
+      #    - your_email@example.com
+
+      tasks:
+        - task_key: encounter_qa_results
+          notebook_task:
+            notebook_path: ../../src/encounter_qa_results.sql
+
+        - task_key: encounter_describe
+          notebook_task:
+            notebook_path: ../../src/encounter_describe.sql
+          depends_on:
+            - task_key: encounter_qa_results
+
+      queue:
+        enabled: true
