@@ -1,0 +1,23 @@
+# Optimize Encounter   
+resources:
+  jobs:
+    encounter_optimize_job:
+      name: Optimized the encounter table 
+
+      schedule:
+        quartz_cron_expression: 0 30 19 * * ?
+        timezone_id: PST 
+        pause_status: UNPAUSED
+      max_concurrent_runs: 4
+
+      #email_notifications:
+      #  on_failure:
+      #    - your_email@example.com
+
+      tasks:
+        - task_key: encounter_optimize
+          notebook_task:
+            notebook_path: ../../src/encounter_optimize.sql
+
+      queue:
+        enabled: true
