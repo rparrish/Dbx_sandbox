@@ -4,7 +4,8 @@
     name: {{.project_name}}
 
   include:
-    - resources/*.yml
+    - resources/*/*.yml
+    - src/*/*.yml
 
   targets:
     # The 'dev' target, used for development purposes.
@@ -16,9 +17,29 @@
       mode: development
       default: true
       workspace:
-        host: {{workspace_host}}
+        #host: {{workspace_host}}
+        host: {{.dev_host_name}}
+      presets:
+        tags:
+          workgroup: {{.workgroup_name}}
+          cost_center: {{.cost_center}}
 
     # The 'prod' target, used for production deployment.
+    preprod:
+      #
+      # By making use of 'mode: production' we enable strict checks
+      # to make sure we have correctly configured this target.
+      mode: production
+      workspace:
+        host: {{.preprod_host_name}}
+        root_path: /Shared/.bundle/${{.workgroup_name}}/${bundle.target}/${bundle.name}
+      run_as:
+        # This runs as {{user_name}} in production. Alternatively,
+        # a service principal could be used here using service_principal_name
+        # (see Databricks documentation).
+        user_name: {{user_name}}
+
+  # The 'prod' target, used for production deployment.
     prod:
       # For production deployments, we only have a single copy, so we override the
       # workspace.root_path default of
@@ -30,7 +51,7 @@
       mode: production
       workspace:
         host: {{workspace_host}}
-        root_path: /Shared/.bundle/prod/${bundle.name}
+        root_path: /Shared/.bundle/{{.workgroup_name}}/prod/${bundle.name}
       {{- if not is_service_principal}}
       run_as:
         # This runs as {{user_name}} in production. Alternatively,
