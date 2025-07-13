@@ -1,0 +1,35 @@
+# The main job for {{.project_name}}
+resources:
+  jobs:
+    {{.project_name}}_job:
+      name: this shows in Workflows as {{.project_name}}_job
+
+
+      schedule:
+        quartz_cron_expression: 0 10 15 * * ?
+        timezone_id: UTC 
+        pause_status: UNPAUSED
+      max_concurrent_runs: 4
+
+      email_notifications:
+        on_failure:
+          - your_email@example.com
+
+      tasks:
+        - task_key: python_task
+          environment_key: default
+          spark_python_task:
+            python_file: ../../src/task.py
+     
+      queue:
+        enabled: true
+
+      # A list of task execution environment specifications that can be referenced by tasks of this job.
+      environments:
+        - environment_key: default
+
+      # Full documentation of this spec can be found at:
+      # https://docs.databricks.com/api/workspace/jobs/create#environments-spec
+          spec:
+            client: "1" 
+

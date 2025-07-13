@@ -2,9 +2,47 @@
   "properties": {
     "project_name": {
       "type": "string",
-      "default": "Dbx_sandbox",
-      "description": "Databricks Sandbox",
+      "default": "basic_bundle",
+      "description": "What is the name of the bundle you want to create?",
       "order": 1
+    },
+  "workgroup_name": {
+      "type": "string",
+      "default": "V20_DAG",
+      "description": "What is the workgroup name?",
+      "order": 2
+    },
+  "cost_center": {
+      "type": "string",
+      "default": "none",
+      "description": "What is the cost center for this project?",
+      "order": 3
+    },
+  "dev_cluster_id": {
+      "type": "string",
+      "default": "123456789",
+      "description": "What is the cluster ID for development? ",
+      "order": 4
+    },
+  "dev_host_name": {
+      "type": "string",
+      "default": "https://",
+      "description": "What is the DEVTEST hostname URL?",
+      "order": 5
+    },
+  "preprod_host_name": {
+      "type": "string",
+      "default": "https://",
+      "description": "What is the PREPROD hostname URL?",
+      "order": 6
+    },
+  "prod_host_name": {
+      "type": "string",
+      "default": "https://",
+      "description": "What is the PROD hostname URL?",
+      "order": 7
     }
-  }
+  },
+  "success_message": "\nYour bundle '{{.project_name}}' for '{{.workgroup_name}}' has been created."
 }
+
