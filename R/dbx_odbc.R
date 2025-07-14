@@ -2,14 +2,33 @@
 library(odbc)
 
 
-Sys.setenv(DATABRICKS_HOST = "dbc-779868ff-f2af.cloud.databricks.com")
+# Free
+#Sys.setenv(DATABRICKS_HOST = "dbc-779868ff-f2af.cloud.databricks.com")
 
 # S4 method for class 'DatabricksOdbcDriver'
 conn <- dbConnect(
     drv = odbc::databricks(),
-    httpPath = "sql/protocolv1/o/1984252242175148/0609-005641-szjm4zq7",
+    httpPath = "/sql/1.0/warehouses/9f70acd8ebe5803f",
     uid = "token", 
-    pwd = "<my token>"
+    pwd = "new_PAT"
+    )
+
+
+# Legacy
+Sys.setenv(DATABRICKS_HOST = "community.cloud.databricks.com")
+
+oath_url <- "https://community.cloud.databricks.com/oidc"
+
+# S4 method for class 'DatabricksOdbcDriver'
+conn <- dbConnect(
+    drv = odbc::databricks(),
+    httpPath = "sql/protocolv1/o/3475590573577960/0712-181604-33ghp049",
+    AuthMech = 11,
+    Auth_Flow = 2,
+    PWD = "my_password"
+)
+    
+     #$pwd = "<my token>"
     )
 
 

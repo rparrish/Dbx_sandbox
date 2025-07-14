@@ -1,0 +1,24 @@
+# Optimize Lab   
+resources:
+  jobs:
+    lab_optimize_job:
+      name: Optimize the lab table 
+
+      schedule:
+        # 01=18, 11=16, 14=07 UTC=PT
+        quartz_cron_expression: 0 30 19 * * ?
+        timezone_id: UTC 
+        pause_status: UNPAUSED
+      max_concurrent_runs: 4
+
+      #email_notifications:
+      #  on_failure:
+      #    - your_email@example.com
+
+      tasks:
+        - task_key: lab_optimize
+          notebook_task:
+            notebook_path: ../../src/lab_optimize.sql
+
+      queue:
+        enabled: true
