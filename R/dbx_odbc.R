@@ -10,7 +10,7 @@ conn <- dbConnect(
     drv = odbc::databricks(),
     httpPath = "/sql/1.0/warehouses/9f70acd8ebe5803f",
     uid = "token", 
-    pwd = ""
+    pwd = "new_PAT"
     )
 
 
