@@ -1,0 +1,29 @@
+# Update Lab   
+resources:
+  jobs:
+    lab_upsert:
+      name: Update the lab table 
+
+      schedule:
+        # 01=18, 11=16, 14=07 UTC=PT
+        quartz_cron_expression: 0 0/15 19 * * ?
+        timezone_id: UTC 
+        pause_status: UNPAUSED
+      max_concurrent_runs: 4
+
+      #email_notifications:
+      #  on_failure:
+      #    - your_email@example.com
+
+      tasks:
+        - task_key: lab_stg_update
+          notebook_task:
+            notebook_path: ../../src/lab_stg_update.sql
+
+        - task_key: lab_upsert
+          notebook_task:
+            notebook_path: ../../src/lab_upsert.sql
+
+      queue:
+        enabled: true
+

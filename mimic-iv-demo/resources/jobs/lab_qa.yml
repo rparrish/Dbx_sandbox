@@ -1,0 +1,31 @@
+# Quality checks for Lab   
+resources:
+  jobs:
+    lab_qa_job:
+      name: Check the quality of the lab table 
+
+      schedule:
+        # 01=18, 11=16, 14=07 UTC=PT
+        quartz_cron_expression: 0 0/15 01,14 * * ? 
+        timezone_id: UTC 
+        pause_status: UNPAUSED
+      max_concurrent_runs: 4
+
+      #email_notifications:
+      #  on_failure:
+      #    - your_email@example.com
+
+      tasks:
+        - task_key: lab_qa_results
+          notebook_task:
+            notebook_path: ../../src/lab_qa_results.sql
+
+        - task_key: lab_describe
+          notebook_task:
+            notebook_path: ../../src/lab_describe.sql
+          depends_on:
+            - task_key: lab_qa_results
+
+      queue:
+        enabled: true
+
