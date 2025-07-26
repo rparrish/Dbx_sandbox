@@ -24,12 +24,13 @@ resources:
             - task_key: get_views
           for_each_task:
             inputs: "{{tasks.get_views.values.table_names}}"
+            concurrency: 3
             task:
               task_key: update_tables_iteration
               notebook_task:
                 notebook_path: /Workspace/Users/rparrish@flightweb.com/Projects/mimic-iv-demo/src/update_tables_sql
                 base_parameters:
-                  table_names: "{{input}}"
+                  table_name: "{{input}}"
                 source: WORKSPACE
       queue:
         enabled: true
