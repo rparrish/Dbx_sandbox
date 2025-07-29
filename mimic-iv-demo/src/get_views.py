@@ -17,6 +17,7 @@ table_name
 FROM metastore.information_schema.views 
 WHERE 1=1 
 AND table_name LIKE 'v\_%'
+AND table_name NOT LIKE 'v\_encounter%'
 """)
 
 
