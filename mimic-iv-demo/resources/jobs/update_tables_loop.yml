@@ -5,7 +5,7 @@ resources:
       name: Update tables using foreach loop
 
       schedule:
-        quartz_cron_expression: 0 0/15 10 * * ?
+        quartz_cron_expression: 0 0/15 18 * * ?
         timezone_id: PST 
         pause_status: UNPAUSED
       max_concurrent_runs: 4
@@ -15,21 +15,27 @@ resources:
       #    - your_email@example.com
 
       tasks:
+        - task_key: encounter_stg_update
+          notebook_task:
+            notebook_path: ../../src/encounter_stg_update.sql
         - task_key: get_views
           notebook_task:
             notebook_path: /Workspace/Users/rparrish@flightweb.com/Projects/mimic-iv-demo/src/get_views
             source: WORKSPACE
+          depends_on:
+            - task_key: encounter_stg_update
         - task_key: update_tables
           depends_on:
             - task_key: get_views
           for_each_task:
             inputs: "{{tasks.get_views.values.table_names}}"
+            concurrency: 3
             task:
               task_key: update_tables_iteration
               notebook_task:
                 notebook_path: /Workspace/Users/rparrish@flightweb.com/Projects/mimic-iv-demo/src/update_tables_sql
                 base_parameters:
-                  table_names: "{{input}}"
+                  table_name: "{{input}}"
                 source: WORKSPACE
       queue:
         enabled: true
