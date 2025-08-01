@@ -31,7 +31,15 @@ resources:
           depends_on:
             - task_key: encounter_stg_update
           for_each_task:
-            inputs: '[{"table_name": "lab", "lookback_mins": 5}, {"table_name": "vital_signs", "lookback_mins": 10}]'
+            inputs: '[
+              {"table_name": "lab", "lookback_mins": 5}, 
+              {"table_name": "vital_signs", "lookback_mins": 10}
+            ]'
+ #           inputs:
+ #             json_file_path:
+ #               type: str
+ #               description: "Path to the input JSON configuration file." 
+ #               default: "path/to/default_config.json"
             task:
               task_key: update_tables_json_iteration
               notebook_task:
