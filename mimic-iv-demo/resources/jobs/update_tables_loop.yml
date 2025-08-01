@@ -21,11 +21,11 @@ resources:
             base_parameters:
               lookback_mins: 15 
 
-        - task_key: get_views
-          notebook_task:
-            notebook_path: ../../src/get_views.py
-          depends_on:
-            - task_key: encounter_stg_update
+#       - task_key: get_views
+#         notebook_task:
+#           notebook_path: ../../src/get_views.py
+#         depends_on:
+#           - task_key: encounter_stg_update
 
         - task_key: update_tables_json
           depends_on:
@@ -41,19 +41,20 @@ resources:
                   lookback_mins: "{{input.lookback_mins}}"
             concurrency: 4
 
-        - task_key: update_tables
-          depends_on:
-            - task_key: get_views
-          for_each_task:
-            inputs: "{{tasks.get_views.values.table_names}}"
-            concurrency: 4
-            task:
-              task_key: update_tables_iteration
-              notebook_task:
-                notebook_path: ../../src/update_tables_sql.sql
-                base_parameters:
-                  table_name: "{{input}}"
-                source: WORKSPACE
+#       - task_key: update_tables
+#         depends_on:
+#           - task_key: get_views
+#         for_each_task:
+#           inputs: "{{tasks.get_views.values.table_names}}"
+#           concurrency: 4
+#           task:
+#             task_key: update_tables_iteration
+#             notebook_task:
+#               notebook_path: ../../src/update_tables_sql.sql
+#               base_parameters:
+#                 table_name: "{{input}}"
+#               source: WORKSPACE
+
       queue:
         enabled: true
 
