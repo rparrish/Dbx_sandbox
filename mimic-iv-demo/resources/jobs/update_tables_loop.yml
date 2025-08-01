@@ -65,4 +65,4 @@ resources:
 
       queue:
         enabled: true
-
+        
