@@ -7,7 +7,7 @@ resources:
       schedule:
         quartz_cron_expression: 0 30 19 * * ?
         timezone_id: PST 
-        pause_status: UNPAUSED
+        pause_status: PAUSED
       max_concurrent_runs: 4
 
       #email_notifications:
